@@ -12,6 +12,7 @@ import {
 import { loginuser } from "@/restAPIs/authentication";
 import SnackbarAlert from "@/components/common/SnackbarAlert";
 
+import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
 
 const LoginPage: React.FC = () => {
@@ -22,12 +23,12 @@ const LoginPage: React.FC = () => {
     const res = await loginuser(givemEmail, givenPassword)
     if(res.data){
       const { accessToken, refreshToken, ...userDetails } = res.data;
-      localStorage.setItem("accessToken", accessToken); // Expires in 7 days
-      localStorage.setItem("refreshToken", refreshToken); // Expires in 30 days
+      Cookies.set('accessToken', accessToken)
+      Cookies.set('refreshToken', refreshToken)
       localStorage.setItem("user", JSON.stringify(userDetails))
-      console.log(userDetails, "loggedin User")
       setOpenSucess(true)
       router.push('/')
+      router.refresh()
     }
   }
 

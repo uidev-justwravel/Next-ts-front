@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, Box, Typography, Avatar, Fade } from "@mui/material";
+import { Box, Typography, Avatar, Fade } from "@mui/material";
 import LogoutComponent from "./LogoutComponent";
 import ProfileDetailComponent from "./ProfileDetailComponent";
 
-interface ProfileComponentProps {
-  userImage: string;
-  userName: string;
-}
-
-const ProfileComponent: React.FC<ProfileComponentProps> = () => {
+const ProfileComponent: React.FC = () => {
   const [openModal, setOpenModal] = useState(false);
   const [userName, setUserName] = useState<string>();
   const [userImage, setUserImage] = useState<string>();

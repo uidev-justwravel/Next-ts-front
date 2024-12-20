@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
+import Cookies from 'js-cookie'
 
 const LogoutComponent = () => {
   const [open, setOpen] = useState(false);
@@ -22,11 +23,11 @@ const LogoutComponent = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    console.log("User logged out");
+    Cookies.remove('accessToken')
+    Cookies.remove('refreshToken')
+    localStorage.removeItem("user")
     setOpen(false);
-    router.push('/login')
+    router.refresh()
   };
 
   return (
