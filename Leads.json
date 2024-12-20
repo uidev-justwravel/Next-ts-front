@@ -1,0 +1,38 @@
+[
+    {
+      "id": 1,
+      "package_id": 101,
+      "lead_owner": "John Doe",
+      "lead_created_date": "2024-12-01",
+      "lead_status": "New"
+    },
+    {
+      "id": 2,
+      "package_id": 102,
+      "lead_owner": "Jane Smith",
+      "lead_created_date": "2024-12-02",
+      "lead_status": "In Progress"
+    },
+    {
+      "id": 3,
+      "package_id": 103,
+      "lead_owner": "Michael Johnson",
+      "lead_created_date": "2024-12-03",
+      "lead_status": "Converted"
+    },
+    {
+      "id": 4,
+      "package_id": 104,
+      "lead_owner": "Emily Davis",
+      "lead_created_date": "2024-12-04",
+      "lead_status": "Contacted"
+    },
+    {
+      "id": 5,
+      "package_id": 105,
+      "lead_owner": "David Martinez",
+      "lead_created_date": "2024-12-05",
+      "lead_status": "Closed"
+    }
+  ]
+  

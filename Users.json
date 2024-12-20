@@ -1,0 +1,48 @@
+[
+    {
+      "id": 1,
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "john.doe@example.com",
+      "phone": "+1234567890",
+      "date_of_birth": "1990-05-14",
+      "address": "1234 Elm Street, Springfield, IL"
+    },
+    {
+      "id": 2,
+      "first_name": "Jane",
+      "last_name": "Smith",
+      "email": "jane.smith@example.com",
+      "phone": "+1987654321",
+      "date_of_birth": "1985-08-22",
+      "address": "5678 Oak Avenue, Rivertown, NY"
+    },
+    {
+      "id": 3,
+      "first_name": "Michael",
+      "last_name": "Johnson",
+      "email": "michael.johnson@example.com",
+      "phone": "+1122334455",
+      "date_of_birth": "1992-03-10",
+      "address": "9101 Pine Road, Lakeview, TX"
+    },
+    {
+      "id": 4,
+      "first_name": "Emily",
+      "last_name": "Davis",
+      "email": "emily.davis@example.com",
+      "phone": "+1234987654",
+      "date_of_birth": "1995-12-05",
+      "address": "1213 Maple Lane, Brookfield, WI"
+    },
+    {
+      "id": 5,
+      "first_name": "David",
+      "last_name": "Martinez",
+      "email": "david.martinez@example.com",
+      "phone": "+1456789032",
+      "date_of_birth": "1988-06-30",
+      "address": "1415 Birch Blvd, Springfield, MO"
+    }
+  ]
+  
