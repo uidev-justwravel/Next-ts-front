@@ -28,6 +28,8 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import ProfileComponent from "./authentication/ProfileComponent";
 
+import Cookies from 'js-cookie'
+
 const drawerWidth = 240;
 
 const adminmodules = [
@@ -42,7 +44,7 @@ const userModules = [
   { name: "About", icon: <InfoIcon />, route: "/about" },
 ];
 
-const user = localStorage.getItem("user");
+const user = Cookies.get('user')
 
 const modules = user && JSON.parse(user).id === 1 ? adminmodules : userModules;
 

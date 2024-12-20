@@ -25,7 +25,8 @@ const LogoutComponent = () => {
   const handleLogout = () => {
     Cookies.remove('accessToken')
     Cookies.remove('refreshToken')
-    localStorage.removeItem("user")
+    Cookies.remove('user')
+
     setOpen(false);
     router.refresh()
   };

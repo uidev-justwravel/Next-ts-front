@@ -25,7 +25,7 @@ const LoginPage: React.FC = () => {
       const { accessToken, refreshToken, ...userDetails } = res.data;
       Cookies.set('accessToken', accessToken)
       Cookies.set('refreshToken', refreshToken)
-      localStorage.setItem("user", JSON.stringify(userDetails))
+      Cookies.set('user',  JSON.stringify(userDetails))
       setOpenSucess(true)
       router.push('/')
       router.refresh()

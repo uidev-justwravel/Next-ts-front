@@ -17,7 +17,6 @@ const getAccessTokenUsingRefresh = async (token: string) => {
   Cookies.remove("accessToken")
   try {
     const res = await refreshSession(token);
-    Cookies.set("accessToken", res.data.accessToken);
     return res.data.accessToken;
   } catch (error) {
     console.error("Failed to refresh session:", error);
