@@ -17,15 +17,14 @@ import { useRouter } from 'next/navigation'
 
 const LoginPage: React.FC = () => {
   const [openSucess, setOpenSucess] = useState<boolean>(false)
-  const router  = useRouter()
+  const router = useRouter()
 
-  const handleLoginuser = async (givemEmail:string, givenPassword: string) => {
+  const handleLoginuser = async (givemEmail: string, givenPassword: string) => {
     const res = await loginuser(givemEmail, givenPassword)
-    if(res.data){
+    if (res.data) {
       const { accessToken, refreshToken, ...userDetails } = res.data;
       Cookies.set('accessToken', accessToken)
       Cookies.set('refreshToken', refreshToken)
-      Cookies.set('user',  JSON.stringify(userDetails))
       setOpenSucess(true)
       router.push('/')
       router.refresh()
@@ -37,14 +36,14 @@ const LoginPage: React.FC = () => {
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string | null;
     const password = formData.get("password") as string | null;
-  
+
     if (email && password) {
       handleLoginuser(email, password);
     } else {
       console.error("Email or password is missing");
     }
   };
-  
+
 
   return (
     <>
@@ -115,11 +114,11 @@ const LoginPage: React.FC = () => {
         </Box>
       </Container>
       <SnackbarAlert
-      message="logged in Successfully"
-      autoHideDuration={5000}
-      open={openSucess}
-      setOpen={setOpenSucess}
-      type="success"
+        message="logged in Successfully"
+        autoHideDuration={5000}
+        open={openSucess}
+        setOpen={setOpenSucess}
+        type="success"
       />
     </>
   );
