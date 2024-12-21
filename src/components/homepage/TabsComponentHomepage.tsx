@@ -11,10 +11,14 @@ import {
   Stack,
   Box,
 } from "@mui/material";
-import Users from "../../../Users.json";
 import Leads from "../../../Leads.json";
+import DetailCard from "../about/DetailCard";
 
-const TabsComponentHomepage = () => {
+interface UserTableProps {
+  users: User[];
+}
+
+const TabsComponentHomepage: React.FC<UserTableProps> = ({ users }) => {
   const [selectedTab, setSelectedTab] = useState<number>(0);
 
   const handleTabChange = (
@@ -52,70 +56,8 @@ const TabsComponentHomepage = () => {
               justifyContent: "center",
             }}
           >
-            {Users.map((user) => (
-              <Card
-                key={user.id}
-                sx={{
-                  width: "100%",
-                  maxWidth: "350px", // Set a fixed width for all boxes
-                  borderRadius: 3,
-                  boxShadow: 3,
-                  display: "flex",
-                  flexDirection: "column",
-                  textAlign: "center",
-                }}
-              >
-                <CardContent>
-                  <Typography
-                    variant="h6"
-                    component="div"
-                    sx={{ fontWeight: "bold", marginBottom: "1rem" }}
-                  >
-                    {`${user.first_name} ${user.last_name}`}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 1 }}
-                  >
-                    <strong>Email:</strong> {user.email}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 1 }}
-                  >
-                    <strong>Phone:</strong> {user.phone}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 1 }}
-                  >
-                    <strong>DOB:</strong> {user.date_of_birth}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 2 }}
-                  >
-                    <strong>Address:</strong> {user.address}
-                  </Typography>
-
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    sx={{
-                      borderRadius: 1,
-                      boxShadow: 1,
-                      "&:hover": { boxShadow: 2 },
-                    }}
-                  >
-                    View More
-                  </Button>
-                </CardContent>
-              </Card>
+            {users.map((user) => (
+              <DetailCard user={user} />
             ))}
           </Box>
         </Stack>
