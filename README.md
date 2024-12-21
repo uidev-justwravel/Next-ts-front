@@ -38,3 +38,24 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import SideDrawer from "../components/SideDrawer";
+```
+
+
+# Users you can use:
+## Admin
+```bash
+      "username": "emilys",
+      "password": "emilyspass",
+```
+
+## Moderator
+```bash
+      "username": "miar",
+      "password": "miarpass",
+```
+
+## User
+```bash
+      "username": "evelyns",
+      "password": "evelynspass",
+```
