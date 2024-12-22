@@ -34,9 +34,7 @@ export async function middleware(request: NextRequest) {
       const res = await getInitialDataByAccessToken(accessToken);
       if (res?.data) {
         response.cookies.set("user", JSON.stringify(res?.data))
-        console.log(request.nextUrl.pathname, res?.data?.role, "1")
         if (!checkPermission(request.nextUrl.pathname, res?.data?.role)) {
-          console.log(request.nextUrl.pathname, res?.data?.role, "2")
           return NextResponse.redirect(new URL("/", request.url))
         }
       }
@@ -49,10 +47,7 @@ export async function middleware(request: NextRequest) {
           const res = await getInitialDataByAccessToken(newAccessToken);
           if (res?.data) {
             response.cookies.set("user", JSON.stringify(res?.data))
-            // here
-            console.log(request.nextUrl.pathname, res?.data?.role, "1")
             if (!checkPermission(request.nextUrl.pathname, res?.data?.role)) {
-              console.log(request.nextUrl.pathname, res?.data?.role, "2")
               return NextResponse.redirect(new URL("/", request.url))
             }
           }
@@ -74,10 +69,7 @@ export async function middleware(request: NextRequest) {
       const res = await getInitialDataByAccessToken(newAccessToken);
       if (res?.data) {
         response.cookies.set("user", JSON.stringify(res?.data))
-        // here
-        console.log(request.nextUrl.pathname, res?.data?.role, "1")
         if (!checkPermission(request.nextUrl.pathname, res?.data?.role)) {
-          console.log(request.nextUrl.pathname, res?.data?.role, "2")
           return NextResponse.redirect(new URL("/", request.url))
         }
       }

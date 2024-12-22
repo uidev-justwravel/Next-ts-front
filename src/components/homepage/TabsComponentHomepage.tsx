@@ -57,7 +57,7 @@ const TabsComponentHomepage: React.FC<UserTableProps> = ({ users }) => {
             }}
           >
             {users.map((user) => (
-              <DetailCard user={user} />
+              <DetailCard key={user.id} user={user} />
             ))}
           </Box>
         </Stack>

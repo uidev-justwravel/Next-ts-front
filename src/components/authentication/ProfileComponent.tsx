@@ -10,11 +10,10 @@ const ProfileComponent: React.FC = () => {
   const [userName, setUserName] = useState<string>();
   const [userImage, setUserImage] = useState<string>();
   useEffect(() => {
-    const user  = Cookies.get('user')
+    const user = Cookies.get('user')
 
     if (user) {
       const parsedUser = JSON.parse(user); // Assuming user data is stored as a JSON string
-      console.log(parsedUser, "yes")
       setUserName(parsedUser.firstName + parsedUser.lastName);
       setUserImage(parsedUser.image);
     }

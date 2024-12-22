@@ -64,4 +64,11 @@ declare global {
     }
 }
 
+declare global {
+    interface BasicUser {
+        firstName: string;
+        lastName: string;
+        age: number;
+    }
+}
 export { };

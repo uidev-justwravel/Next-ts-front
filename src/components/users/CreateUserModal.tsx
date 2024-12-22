@@ -18,7 +18,7 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ setShowingUsers }) =>
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const handleAddUser = async (data: any) => {
+    const handleAddUser = async (data: BasicUser) => {
         try {
             const res = await createUser(data)
             setShowingUsers(prev => [res.data, ...prev])
@@ -94,7 +94,7 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ setShowingUsers }) =>
 
                     {/* Form Section */}
                     <UserForm
-                        onSubmit={handleAddUser}
+                        onSubmit={(data: BasicUser) => { handleAddUser(data) }}
                     />
                 </Box>
             </Modal>

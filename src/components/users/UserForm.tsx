@@ -42,7 +42,6 @@ const UserForm: React.FC<{ onSubmit: (user: User) => void }> = ({ onSubmit }) =>
         lastName,
         age: Number(age),
       };
-      console.log("Form Data:", formData); // Logs the form values
       onSubmit(formData);
 
       // Clear form inputs after submission

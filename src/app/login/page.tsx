@@ -22,7 +22,7 @@ const LoginPage: React.FC = () => {
   const handleLoginuser = async (givemEmail: string, givenPassword: string) => {
     const res = await loginuser(givemEmail, givenPassword)
     if (res.data) {
-      const { accessToken, refreshToken, ...userDetails } = res.data;
+      const { accessToken, refreshToken } = res.data;
       Cookies.set('accessToken', accessToken)
       Cookies.set('refreshToken', refreshToken)
       setOpenSucess(true)
