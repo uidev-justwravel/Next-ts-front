@@ -16,28 +16,19 @@ interface User {
 }
 
 const UserForm: React.FC<{ onSubmit: (user: User) => void }> = ({ onSubmit }) => {
-  const [formData, setFormData] = useState<User>({
-    firstName: "",
-    lastName: "",
-    age: 0,
-  });
+  // Individual states for each input field
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [age, setAge] = useState<number | string>("");
 
   // Errors mapped to string messages
   const [errors, setErrors] = useState<Partial<Record<keyof User, string>>>({});
 
-  const handleChange = (field: keyof User, value: string | number) => {
-    setFormData({ ...formData, [field]: value });
-    setErrors({ ...errors, [field]: "" }); // Clear errors on change
-  };
-
-  const validate = () => {
+  const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof User, string>> = {};
-    if (!formData.firstName.trim())
-      newErrors.firstName = "First name is required";
-    if (!formData.lastName.trim())
-      newErrors.lastName = "Last name is required";
-    if (!formData.age || formData.age <= 0)
-      newErrors.age = "Age must be a positive number";
+    if (!firstName.trim()) newErrors.firstName = "First Name is required.";
+    if (!lastName.trim()) newErrors.lastName = "Last Name is required.";
+    if (!age || Number(age) <= 0) newErrors.age = "Age must be greater than 0.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -45,13 +36,20 @@ const UserForm: React.FC<{ onSubmit: (user: User) => void }> = ({ onSubmit }) =>
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    onSubmit(formData); // Send only formData to the onSubmit function
-    console.log(event)
-    setFormData({
-      firstName: "",
-      lastName: "",
-      age: 0,
-    }); // Reset the form
+    if (validateForm()) {
+      const formData: User = {
+        firstName,
+        lastName,
+        age: Number(age),
+      };
+      console.log("Form Data:", formData); // Logs the form values
+      onSubmit(formData);
+
+      // Clear form inputs after submission
+      setFirstName("");
+      setLastName("");
+      setAge("");
+    }
   };
 
   return (
@@ -84,8 +82,8 @@ const UserForm: React.FC<{ onSubmit: (user: User) => void }> = ({ onSubmit }) =>
           <TextField
             label="First Name"
             fullWidth
-            value={formData.firstName}
-            onChange={(e) => handleChange("firstName", e.target.value)}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
             error={!!errors.firstName}
             helperText={errors.firstName}
             sx={{
@@ -99,8 +97,8 @@ const UserForm: React.FC<{ onSubmit: (user: User) => void }> = ({ onSubmit }) =>
           <TextField
             label="Last Name"
             fullWidth
-            value={formData.lastName}
-            onChange={(e) => handleChange("lastName", e.target.value)}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
             error={!!errors.lastName}
             helperText={errors.lastName}
             sx={{
@@ -115,8 +113,8 @@ const UserForm: React.FC<{ onSubmit: (user: User) => void }> = ({ onSubmit }) =>
             label="Age"
             type="number"
             fullWidth
-            value={formData.age}
-            onChange={(e) => handleChange("age", Number(e.target.value))}
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
             error={!!errors.age}
             helperText={errors.age}
             sx={{

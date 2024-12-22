@@ -3,19 +3,31 @@ import React, { useState } from "react";
 import { Modal, Box, Typography, Button, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import UserForm from "./UserForm";
+import { createUser } from "@/restAPIs/user";
+import SnackbarAlert from "../common/SnackbarAlert";
 
 interface CreateUserModalProps {
     setShowingUsers: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
 const CreateUserModal: React.FC<CreateUserModalProps> = ({ setShowingUsers }) => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
+    const [openSucess, setOpenSucess] = useState<boolean>(false);
+    const [openError, setOpenError] = useState<boolean>(false);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const handleAddUser = (data: any) => {
-        console.log(data)
+    const handleAddUser = async (data: any) => {
+        try {
+            const res = await createUser(data)
+            setShowingUsers(prev => [res.data, ...prev])
+            setOpenSucess(true)
+            handleClose()
+        } catch (error) {
+            setOpenError(true)
+            console.log(error)
+        }
     }
     return (
         <>
@@ -86,6 +98,20 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ setShowingUsers }) =>
                     />
                 </Box>
             </Modal>
+            <SnackbarAlert
+                message="User Created Successfully"
+                autoHideDuration={5000}
+                open={openSucess}
+                setOpen={setOpenSucess}
+                type="success"
+            />
+            <SnackbarAlert
+                message="Error in creating User"
+                autoHideDuration={5000}
+                open={openError}
+                setOpen={setOpenError}
+                type="error"
+            />
         </>
     );
 };
