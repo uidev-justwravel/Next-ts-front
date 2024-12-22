@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getLoggedInUser, refreshSession } from "./restAPIs/authentication";
 import Cookies from "js-cookie";
+import checkPermission from "./roleAuthorization";
 
 const getInitialDataByAccessToken = async (token: string) => {
   try {
@@ -33,6 +34,11 @@ export async function middleware(request: NextRequest) {
       const res = await getInitialDataByAccessToken(accessToken);
       if (res?.data) {
         response.cookies.set("user", JSON.stringify(res?.data))
+        console.log(request.nextUrl.pathname, res?.data?.role, "1")
+        if (!checkPermission(request.nextUrl.pathname, res?.data?.role)) {
+          console.log(request.nextUrl.pathname, res?.data?.role, "2")
+          return NextResponse.redirect(new URL("/", request.url))
+        }
       }
     } catch (error) {
       console.error("Access token is invalid, trying refresh token...", error);
@@ -43,6 +49,12 @@ export async function middleware(request: NextRequest) {
           const res = await getInitialDataByAccessToken(newAccessToken);
           if (res?.data) {
             response.cookies.set("user", JSON.stringify(res?.data))
+            // here
+            console.log(request.nextUrl.pathname, res?.data?.role, "1")
+            if (!checkPermission(request.nextUrl.pathname, res?.data?.role)) {
+              console.log(request.nextUrl.pathname, res?.data?.role, "2")
+              return NextResponse.redirect(new URL("/", request.url))
+            }
           }
         } catch (error) {
           console.error(
@@ -62,6 +74,12 @@ export async function middleware(request: NextRequest) {
       const res = await getInitialDataByAccessToken(newAccessToken);
       if (res?.data) {
         response.cookies.set("user", JSON.stringify(res?.data))
+        // here
+        console.log(request.nextUrl.pathname, res?.data?.role, "1")
+        if (!checkPermission(request.nextUrl.pathname, res?.data?.role)) {
+          console.log(request.nextUrl.pathname, res?.data?.role, "2")
+          return NextResponse.redirect(new URL("/", request.url))
+        }
       }
     } catch (error) {
       console.error("Failed to refresh access token, redirecting to login...", error);
@@ -75,5 +93,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/leads", "/user"],
+  matcher: ["/", "/leads", "/user/:path", "/about"],
 };
