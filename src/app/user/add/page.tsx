@@ -1,9 +1,10 @@
 import React from 'react'
-import UserForm from "@/components/users/UserForm"
+import CreateUserModal from '@/components/users/CreateUserModal'
 
 const page = () => {
   return (
-    <UserForm/>
+    <>
+    </>
   )
 }
 

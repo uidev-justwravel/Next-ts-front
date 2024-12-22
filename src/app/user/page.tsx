@@ -1,4 +1,4 @@
-import UsersList from '@/components/users/UsersList'
+import UsersParentComponent from '@/components/users/UsersParentComponent'
 import { getAllUsers } from '@/restAPIs/user'
 import React from 'react'
 
@@ -14,7 +14,9 @@ const allUsers = async () => {
 const page = async () => {
   const users = await allUsers()
   return (
-    <UsersList users={users?.data.users} />
+    <>
+      <UsersParentComponent initialUsers={users?.data?.users} />
+    </>
   )
 }
 

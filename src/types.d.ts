@@ -1,4 +1,5 @@
-// Global TypeScript declarations
+
+// User Type
 declare global {
     interface User {
         id: number;
@@ -63,4 +64,4 @@ declare global {
     }
 }
 
-export { }; // This file needs to be treated as a module
+export { };
