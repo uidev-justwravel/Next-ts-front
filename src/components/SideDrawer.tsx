@@ -28,6 +28,8 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import ProfileComponent from "./authentication/ProfileComponent";
 
+import Cookies from 'js-cookie'
+
 const drawerWidth = 240;
 
 const adminmodules = [
@@ -37,14 +39,29 @@ const adminmodules = [
   { name: "About", icon: <InfoIcon />, route: "/about" },
 ];
 
+const moderatorModules = [
+  { name: "Home", icon: <HomeIcon />, route: "/" },
+  { name: "User", icon: <PersonIcon />, route: "/user" },
+  { name: "About", icon: <InfoIcon />, route: "/about" },
+];
+
 const userModules = [
   { name: "Home", icon: <HomeIcon />, route: "/" },
   { name: "About", icon: <InfoIcon />, route: "/about" },
 ];
 
-const user = localStorage.getItem("user");
+const userCookie = Cookies.get("user");
 
-const modules = user && JSON.parse(user).id === 1 ? adminmodules : userModules;
+let userRole: string | null = "user";
+if (userCookie) {
+  try {
+    userRole = JSON.parse(userCookie).role;
+  } catch (error) {
+    console.error("Error parsing user cookie:", error);
+  }
+}
+
+const modules = userRole === "admin" ? adminmodules : userRole === "moderator" ? moderatorModules : userModules
 
 const SideDrawer: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState<boolean>(true);

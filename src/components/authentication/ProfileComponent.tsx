@@ -3,15 +3,17 @@ import { Box, Typography, Avatar, Fade } from "@mui/material";
 import LogoutComponent from "./LogoutComponent";
 import ProfileDetailComponent from "./ProfileDetailComponent";
 
+import Cookies from 'js-cookie'
+
 const ProfileComponent: React.FC = () => {
   const [openModal, setOpenModal] = useState(false);
   const [userName, setUserName] = useState<string>();
   const [userImage, setUserImage] = useState<string>();
   useEffect(() => {
-    const user = localStorage.getItem("user");
+    const user = Cookies.get('user')
+
     if (user) {
       const parsedUser = JSON.parse(user); // Assuming user data is stored as a JSON string
-      console.log(parsedUser, "yes")
       setUserName(parsedUser.firstName + parsedUser.lastName);
       setUserImage(parsedUser.image);
     }

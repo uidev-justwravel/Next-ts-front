@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { updateUser } from "@/restAPIs/user";
+import { updateLead } from "@/restAPIs/leads";
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -30,7 +30,7 @@ interface FormValues {
 const UpdateUserComponent = () => {
   const handleSubmit = async (values: FormValues) => {
     try {
-      const response = await updateUser(values);
+      const response = await updateLead(values);
       if (response.data.success) {
         console.log("User updated successfully.");
       } else {

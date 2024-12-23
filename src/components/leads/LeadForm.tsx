@@ -219,8 +219,7 @@ const LeadForm: React.FC<{ onSubmit: (lead: Lead) => void }> = ({
 };
 
 export default function App() {
-  const handleLeadSubmit = (newLead: Lead) => {
-    console.log("New Lead Created:", newLead);
+  const handleLeadSubmit = () => {
     alert("Lead Created Successfully!");
   };
 

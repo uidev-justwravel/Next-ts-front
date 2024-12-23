@@ -1,8 +1,8 @@
 import React from "react";
-import Main from "./Main";
+import AddLead from "./add/AddLead";
 
 const page = () => {
-  return <Main/>;
+  return <AddLead />;
 };
 
 export default page;
