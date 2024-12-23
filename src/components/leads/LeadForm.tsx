@@ -1,227 +1,218 @@
 "use client";
-
 import React, { useState } from "react";
-import {
-  Box,
-  TextField,
-  Button,
-  Paper,
-  Typography,
-  Grid,
-  Divider,
-} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import { createLeads } from "@/restAPIs/leads";
+import SnackbarAlert from "../common/SnackbarAlert";
+import { useRouter } from "next/navigation";
 
-interface Lead {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  company: string;
-  message: string;
-}
 
-const LeadForm: React.FC<{ onSubmit: (lead: Lead) => void }> = ({
-  onSubmit,
-}) => {
-  const [formData, setFormData] = useState<Omit<Lead, "id">>({
-    name: "",
+
+const LeadForm: React.FC = () => {
+  const router  = useRouter()
+  const [openSucess, setOpenSucess] = useState<boolean>(false)
+  const [openError, setOpenError] = useState<boolean>(false)
+  const [leadData, setLeadData] = useState<FormLead>({
+    first_name: "",
+    last_name: "",
     email: "",
-    phone: "",
-    company: "",
-    message: "",
+    country_code: 91,
+    phone: 0,
+    instagram_user_name: "",
+    location: "",
+    package_id: 0,
+    package_name: "",
+    no_of_days: 0,
+    pax: 0,
   });
 
-  const [errors, setErrors] = useState<Partial<Omit<Lead, "id">>>({});
-
-  const handleChange = (field: keyof Omit<Lead, "id">, value: string) => {
-    setFormData({ ...formData, [field]: value });
-    setErrors({ ...errors, [field]: "" }); // Clear errors on change
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLeadData((prevState) => ({
+      ...prevState,
+      [name]: name === "phone" || name === "package_id" || name === "no_of_days" || name === "pax"
+        ? parseInt(value) 
+        : value,
+    }));
   };
 
-  const validate = () => {
-    const newErrors: Partial<Omit<Lead, "id">> = {};
-    if (!formData.name.trim()) newErrors.name = "Name is required";
-    if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email))
-      newErrors.email = "A valid email is required";
-    if (!formData.phone.trim() || !/^\+?\d{10,15}$/.test(formData.phone))
-      newErrors.phone = "A valid phone number is required (e.g., +1234567890)";
-    if (!formData.company.trim()) newErrors.company = "Company is required";
-    if (!formData.message.trim()) newErrors.message = "Message is required";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    if (validate()) {
-      const newLead = {
-        id: Math.floor(Math.random() * 1000) + 1,
-        ...formData,
-      };
-      onSubmit(newLead);
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        company: "",
-        message: "",
-      }); // Reset the form
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+   try {
+    const res = await createLeads(leadData)
+    if(res.data){
+      setOpenSucess(true)
+      router.push(`/leads`)
     }
+   } catch (error) {
+    console.log(error)
+    setOpenError(true)
+   }
   };
 
   return (
-    <Paper
+    <>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
       sx={{
-        maxWidth: 700,
+        maxWidth: 480, // Reduce width
         margin: "auto",
-        mt: 5,
-        p: 4,
-        borderRadius: 3,
-        boxShadow: "0 6px 20px rgba(0, 0, 0, 0.1)",
-        backgroundImage: "linear-gradient(to right, #f7f9fc, #eef2f6)",
+        padding: 3,
+        borderRadius: 2,
+        boxShadow: 3,
+        backgroundColor: "#ffffff",
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
       }}
     >
-      <Typography
-        variant="h4"
-        sx={{
-          textAlign: "center",
-          mb: 3,
-          fontWeight: "bold",
-          color: "#37474f",
-        }}
-      >
-        Create New Lead
+      <Typography variant="h6" sx={{ marginBottom: 2, textAlign: "center", fontWeight: "bold" }}>
+        Create a New Lead
       </Typography>
-      <Divider sx={{ mb: 3, borderColor: "#cfd8dc" }} />
-      <Box component="form" onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          {/* Name */}
-          <Grid item xs={12}>
-            <TextField
-              label="Name"
-              fullWidth
-              value={formData.name}
-              onChange={(e) => handleChange("name", e.target.value)}
-              error={!!errors.name}
-              helperText={errors.name}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 2,
-                },
-              }}
-            />
-          </Grid>
 
-          {/* Email */}
-          <Grid item xs={12}>
-            <TextField
-              label="Email"
-              fullWidth
-              value={formData.email}
-              onChange={(e) => handleChange("email", e.target.value)}
-              error={!!errors.email}
-              helperText={errors.email}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 2,
-                },
-              }}
-            />
-          </Grid>
-
-          {/* Phone */}
-          <Grid item xs={12}>
-            <TextField
-              label="Phone"
-              fullWidth
-              value={formData.phone}
-              onChange={(e) => handleChange("phone", e.target.value)}
-              error={!!errors.phone}
-              helperText={errors.phone}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 2,
-                },
-              }}
-            />
-          </Grid>
-
-          {/* Company */}
-          <Grid item xs={12}>
-            <TextField
-              label="Company"
-              fullWidth
-              value={formData.company}
-              onChange={(e) => handleChange("company", e.target.value)}
-              error={!!errors.company}
-              helperText={errors.company}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 2,
-                },
-              }}
-            />
-          </Grid>
-
-          {/* Message */}
-          <Grid item xs={12}>
-            <TextField
-              label="Message"
-              fullWidth
-              multiline
-              rows={3}
-              value={formData.message}
-              onChange={(e) => handleChange("message", e.target.value)}
-              error={!!errors.message}
-              helperText={errors.message}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 2,
-                },
-              }}
-            />
-          </Grid>
-        </Grid>
-
-        {/* Submit Button */}
-        <Box
-          sx={{
-            mt: 4,
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              px: 5,
-              py: 1.5,
-              fontSize: "1.1rem",
-              fontWeight: "bold",
-              backgroundColor: "#1976d2",
-              borderRadius: 3,
-              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-              transition: "transform 0.2s",
-              "&:hover": {
-                backgroundColor: "#115293",
-                transform: "scale(1.05)",
-              },
-            }}
-          >
-            Submit
-          </Button>
-        </Box>
+      <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+        <TextField
+          fullWidth
+          label="First Name"
+          name="first_name"
+          value={leadData.first_name}
+          onChange={handleChange}
+          required
+          size="small" // Smaller size for text fields
+        />
+        <TextField
+          fullWidth
+          label="Last Name"
+          name="last_name"
+          value={leadData.last_name}
+          onChange={handleChange}
+          required
+          size="small"
+        />
       </Box>
-    </Paper>
+
+      <TextField
+        fullWidth
+        label="Email"
+        name="email"
+        value={leadData.email}
+        onChange={handleChange}
+        type="email"
+        required
+        size="small"
+      />
+
+      <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+        <TextField
+          fullWidth
+          label="Country Code"
+          name="country_code"
+          value={leadData.country_code}
+          onChange={handleChange}
+          type="number"
+          required
+          size="small"
+        />
+        <TextField
+          fullWidth
+          label="Phone"
+          name="phone"
+          value={leadData.phone}
+          onChange={handleChange}
+          type="number"
+          required
+          size="small"
+        />
+      </Box>
+
+      <TextField
+        fullWidth
+        label="Instagram Username"
+        name="instagram_user_name"
+        value={leadData.instagram_user_name}
+        onChange={handleChange}
+        size="small"
+      />
+
+      <TextField
+        fullWidth
+        label="Location"
+        name="location"
+        value={leadData.location}
+        onChange={handleChange}
+        required
+        size="small"
+      />
+
+      <TextField
+        fullWidth
+        label="Package Name"
+        name="package_name"
+        value={leadData.package_name}
+        onChange={handleChange}
+        required
+        size="small"
+      />
+
+      <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+        <TextField
+          fullWidth
+          label="Package ID"
+          name="package_id"
+          value={leadData.package_id}
+          onChange={handleChange}
+          type="number"
+          required
+          size="small"
+        />
+        <TextField
+          fullWidth
+          label="Number of Days"
+          name="no_of_days"
+          value={leadData.no_of_days}
+          onChange={handleChange}
+          type="number"
+          required
+          size="small"
+        />
+      </Box>
+
+      <TextField
+        fullWidth
+        label="Pax"
+        name="pax"
+        value={leadData.pax}
+        onChange={handleChange}
+        type="number"
+        required
+        size="small"
+      />
+
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        sx={{ marginTop: 2, padding: "8px 16px" }} // Adjust button padding for smaller size
+      >
+        Submit
+      </Button>
+    </Box>
+    <SnackbarAlert
+        message="Created Lead Successfully"
+        autoHideDuration={5000}
+        open={openSucess}
+        setOpen={setOpenSucess}
+        type="success"
+      />
+      <SnackbarAlert
+        message="Error in lead Creation"
+        autoHideDuration={5000}
+        open={openError}
+        setOpen={setOpenError}
+        type="error"
+      />
+    </>
   );
 };
 
-export default function App() {
-  const handleLeadSubmit = () => {
-    alert("Lead Created Successfully!");
-  };
-
-  return <LeadForm onSubmit={handleLeadSubmit} />;
-}
+export default LeadForm;

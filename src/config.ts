@@ -37,6 +37,10 @@ export const axiosClient = axios.create({
   baseURL: serviceData.serviceURL,
 });
 
+export const axiosClientLeads = axios.create({
+  baseURL: `http://192.168.0.168:3000`,
+});
+
 
 
 export default serviceData;
